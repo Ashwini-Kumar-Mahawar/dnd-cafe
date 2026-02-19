@@ -441,6 +441,9 @@ section {
 /* ══════════════════════════════════════════════════════════════
    CATEGORIES SECTION
    ══════════════════════════════════════════════════════════════ */
+/* ══════════════════════════════════════════════════════════════
+   CATEGORIES SECTION
+   ══════════════════════════════════════════════════════════════ */
 
 .categories-section {
     background: var(--smoke);
@@ -453,15 +456,20 @@ section {
     margin-top: 48px;
 }
 
+/* ── Unified Card Style (Desktop + Mobile) ───────────────────── */
 .cat-card {
     background: white;
     border-radius: 12px;
-    padding: 24px 16px;
-    text-align: center;
     text-decoration: none;
     border: 1.5px solid transparent;
     transition: all 0.25s;
     box-shadow: 0 2px 8px rgba(61, 10, 10, 0.06);
+    overflow: hidden;
+    
+    /* Fixed height for consistent sizing */
+    height: 160px;
+    position: relative;
+    display: block;
 }
 
 .cat-card:hover {
@@ -470,28 +478,88 @@ section {
     box-shadow: 0 12px 32px rgba(61, 10, 10, 0.12);
 }
 
-.cat-card .emoji {
-    font-size: 2.2rem;
-    display: block;
-    margin-bottom: 10px;
+/* ── Image fills entire card ─────────────────────────────────── */
+.cat-card .cat-image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: var(--smoke);
 }
 
+.cat-card .cat-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.cat-card:hover .cat-image img {
+    transform: scale(1.08);
+}
+
+/* Emoji Fallback (when no image) */
+.cat-card .cat-image .emoji {
+    font-size: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+/* ── Dark overlay gradient ───────────────────────────────────── */
+.cat-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        to top,
+        rgba(30, 5, 5, 0.88) 0%,
+        rgba(30, 5, 5, 0.4) 50%,
+        transparent 100%
+    );
+    z-index: 1;
+    transition: opacity 0.3s ease;
+}
+
+.cat-card:hover::before {
+    background: linear-gradient(
+        to top,
+        rgba(30, 5, 5, 0.92) 0%,
+        rgba(30, 5, 5, 0.5) 60%,
+        rgba(30, 5, 5, 0.2) 100%
+    );
+}
+
+/* ── Text always on top of image ─────────────────────────────── */
 .cat-card .cat-name {
+    position: absolute;
+    bottom: 32px;
+    left: 0;
+    right: 0;
+    z-index: 2;
+    
     font-family: 'Bebas Neue';
     font-size: 1.1rem;
-    color: var(--maroon);
+    color: white;
     letter-spacing: 0.05em;
+    padding: 0 14px;
+    line-height: 1.2;
 }
 
 .cat-card .cat-count {
+    position: absolute;
+    bottom: 12px;
+    left: 0;
+    right: 0;
+    z-index: 2;
+    
     font-size: 0.7rem;
-    color: #a0856a;
-    margin-top: 4px;
+    color: rgba(255, 255, 255, 0.65);
+    padding: 0 14px;
 }
 
-/* ══════════════════════════════════════════════════════════════
-   COMBOS SECTION
-   ══════════════════════════════════════════════════════════════ */
 /* ══════════════════════════════════════════════════════════════
    COMBOS SECTION
    ══════════════════════════════════════════════════════════════ */
@@ -504,112 +572,130 @@ section {
     color: white;
 }
 
-/* ===============================
-   GRID LAYOUT
-=================================*/
-
+/* ── Grid Layout ─────────────────────────────────────────────── */
 .combos-grid {
     margin-top: 60px;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 40px;
+    gap: 24px;
 }
 
-/* ===============================
-   COMBO CARD
-=================================*/
-
+/* ── Combo Card ──────────────────────────────────────────────── */
 .combo-card {
-    background: linear-gradient(145deg, #7a0000, #5c0000);
-    border: 1px solid rgba(201, 146, 42, 0.25);
-    border-radius: 22px;
-    padding: 35px;
-    position: relative;
+    background: var(--maroon2);
+    border: 1.5px solid rgba(201, 146, 42, 0.25);
+    border-radius: 16px;
+    text-decoration: none;
     overflow: hidden;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-
-    box-shadow:
-        0 12px 30px rgba(0, 0, 0, 0.45),
-        inset 0 1px 0 rgba(255, 255, 255, 0.05);
-
+    position: relative;
+    
+    height: 280px;
+    display: block;
+    
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
     transition: all 0.3s ease;
-    backdrop-filter: blur(6px);
 }
 
-/* Top gold accent line */
+.combo-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(201, 146, 42, 0.6);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+}
 
+/* ── Background Image (if combo has image) ──────────────────── */
+.combo-card .combo-image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.combo-card .combo-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.combo-card:hover .combo-image img {
+    transform: scale(1.1);
+}
+
+/* ── Dark Overlay ────────────────────────────────────────────── */
 .combo-card::before {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, transparent, var(--gold), transparent);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-/* Hover Effect */
-
-.combo-card:hover {
-    transform: translateY(-8px);
-    border-color: rgba(201, 146, 42, 0.6);
-    box-shadow:
-        0 20px 40px rgba(0, 0, 0, 0.6),
-        0 0 20px rgba(201, 146, 42, 0.25);
+    inset: 0;
+    background: linear-gradient(
+        to top,
+        rgba(30, 5, 5, 0.92) 0%,
+        rgba(61, 10, 10, 0.75) 50%,
+        rgba(61, 10, 10, 0.4) 100%
+    );
+    z-index: 1;
 }
 
 .combo-card:hover::before {
-    opacity: 1;
+    background: linear-gradient(
+        to top,
+        rgba(30, 5, 5, 0.95) 0%,
+        rgba(61, 10, 10, 0.8) 50%,
+        rgba(61, 10, 10, 0.5) 100%
+    );
 }
 
-/* ===============================
-   TYPOGRAPHY
-=================================*/
+/* ── Content Container ───────────────────────────────────────── */
+.combo-card .combo-content {
+    position: relative;
+    z-index: 2;
+    padding: 24px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
 
+/* ── Typography ──────────────────────────────────────────────── */
 .combo-card .combo-name {
     font-family: 'Bebas Neue';
     font-size: 1.6rem;
     color: white;
     letter-spacing: 0.08em;
-    margin-bottom: 14px;
+    line-height: 1.2;
+    margin-bottom: 12px;
 }
 
 .combo-card .combo-desc {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     color: rgba(255, 255, 255, 0.75);
-    line-height: 1.7;
-    margin-bottom: 32px;
+    line-height: 1.6;
+    margin-bottom: auto;
 }
 
 .combo-card .combo-price {
     font-family: 'Bebas Neue';
-    font-size: 2.4rem;
+    font-size: 2.2rem;
     color: var(--gold-lt);
     display: flex;
     align-items: baseline;
     gap: 6px;
+    margin-top: 16px;
 }
 
 .combo-card .combo-price span {
     font-family: 'Poppins';
-    font-size: 0.9rem;
-    color: rgba(255, 255, 255, 0.65);
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.6);
     font-weight: 400;
 }
 
-/* ===============================
-   BEST VALUE BADGE
-=================================*/
-
+/* ── Best Value Badge ────────────────────────────────────────── */
 .best-value {
     position: absolute;
-    bottom: 50px;
-    right: 20px;
+    bottom: 32px;
+    right: 16px;
+    z-index: 3;
     background: var(--gold);
     color: var(--maroon);
     font-size: 0.65rem;
@@ -618,7 +704,7 @@ section {
     text-transform: uppercase;
     padding: 6px 14px;
     border-radius: 100px;
-    box-shadow: 0 0 12px rgba(201, 146, 42, 0.5);
+    box-shadow: 0 4px 12px rgba(201, 146, 42, 0.4);
 }
 
 /* ══════════════════════════════════════════════════════════════
@@ -852,5 +938,63 @@ footer a {
     footer p {
         text-align: left !important;
     }
+        
+    .categories-grid {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 12px;
+    }
 
+    .cat-card {
+        height: 140px;
+    }
+
+    .cat-card .cat-name {
+        bottom: 28px;
+        font-size: 1rem;
+        padding: 0 12px;
+    }
+
+    .cat-card .cat-count {
+        bottom: 10px;
+        font-size: 0.65rem;
+        padding: 0 12px;
+    }
+
+    .cat-card .cat-image .emoji {
+        font-size: 2rem;
+    }
+
+        .combos-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+        margin-top: 40px;
+    }
+
+    .combo-card {
+        height: 240px;
+    }
+
+    .combo-card .combo-content {
+        padding: 20px;
+    }
+
+    .combo-card .combo-name {
+        font-size: 1.4rem;
+    }
+
+    .combo-card .combo-desc {
+        font-size: 0.8rem;
+        line-height: 1.5;
+    }
+
+    .combo-card .combo-price {
+        font-size: 2rem;
+    }
+
+    .best-value {
+        bottom: 32px;
+        right: 12px;
+        font-size: 0.6rem;
+        padding: 5px 12px;
+    }
 }

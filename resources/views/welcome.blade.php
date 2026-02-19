@@ -19,7 +19,12 @@
             <a href="#combos">Combos</a>
             <a href="#order">Visit Us</a>
             <a href="#about">About</a>
-            <a href="tel:8094296539" style="color: var(--gold-lt); font-weight: 600;">📞 8094296539</a>
+            <a href="tel:8094296539" style="color: var(--gold-lt); font-weight: 600; display: inline-flex; align-items: center; gap: 6px;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                </svg>
+                8094296539
+            </a>        
         </div>
     </nav>
 
@@ -137,11 +142,17 @@
 
                 @foreach(\App\Models\Category::where('is_active', true)->orderBy('sort_order')->withCount('menuItems')->get() as $category)
                     <a href="{{ route('customer.dine-in-only') }}" class="cat-card">
-                        <span class="emoji">{{ $catEmojis[$category->name] ?? '🍽️' }}</span>
+                        <div class="cat-image">
+                            @if($category->image)
+                                <img src="{{ asset('storage/' . $category->image) }}" alt="{{ $category->name }}" loading="lazy">
+                            @else
+                                <span class="emoji">{{ $catEmojis[$category->name] ?? '🍽️' }}</span>
+                            @endif
+                        </div>
                         <div class="cat-name">{{ $category->name }}</div>
                         <div class="cat-count">{{ $category->menu_items_count }} items</div>
                     </a>
-                @endforeach
+                @endforeach            
             </div>
 
             {{-- Info Note --}}
@@ -164,12 +175,28 @@
             <div class="combos-grid">
                 @foreach(\App\Models\MenuItem::whereHas('category', fn($q) => $q->where('name', 'Combos'))->orderBy('price')->get() as $combo)
                     <a href="{{ route('customer.dine-in-only') }}" class="combo-card">
+                        
+                        {{-- Background Image (optional) --}}
+                        @if($combo->image)
+                            <div class="combo-image">
+                                <img src="{{ asset('storage/' . $combo->image) }}" alt="{{ $combo->name }}" loading="lazy">
+                            </div>
+                        @endif
+                        
+                        {{-- Best Value Badge --}}
                         @if($loop->first)
                             <div class="best-value">Best Value</div>
                         @endif
-                        <div class="combo-name">{{ $combo->name }}</div>
-                        <div class="combo-desc">{{ $combo->description }}</div>
-                        <div class="combo-price">₹{{ number_format($combo->price, 0) }} <span>only</span></div>
+                        
+                        {{-- Content --}}
+                        <div class="combo-content">
+                            <div>
+                                <div class="combo-name">{{ $combo->name }}</div>
+                                <div class="combo-desc">{{ $combo->description }}</div>
+                            </div>
+                            <div class="combo-price">₹{{ number_format($combo->price, 0) }} <span>only</span></div>
+                        </div>
+                        
                     </a>
                 @endforeach
             </div>
@@ -280,7 +307,12 @@
         <p style="font-size: 0.72rem; text-align: right; line-height: 2;">
             Chawand ka Mand, Pani Ki Tanki ke Samne<br>
             Near Police Chowki, Jamva Ramgar Road, Jaipur<br>
-            <a href="tel:8094296539">📞 8094296539</a>
+            <a href="tel:8094296539" style="display: inline-flex; align-items: center; gap: 4px;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                </svg>
+                8094296539
+            </a>
         </p>
     </footer>
 
